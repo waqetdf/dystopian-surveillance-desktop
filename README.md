@@ -179,3 +179,24 @@ Pruebas aisladas de los scripts, sin privilegios ni modificación del sistema:
 - [Recuperación y solución de problemas](docs/TROUBLESHOOTING.md)
 - [Selección de vídeos y fuentes](docs/MEDIA-SOURCES.md)
 - [Licencias de recursos](ASSETS-LICENSE.md)
+
+## Barras de título para Kitty, Brave y otras aplicaciones
+
+Dentro de Hyprland, ejecuta `./enable-window-bars.sh` como usuario normal.
+Instala las herramientas de compilación de Arch y registra el repositorio oficial
+`https://github.com/hyprwm/hyprland-plugins` mediante `hyprpm`. Este selecciona y
+compila el plugin `hyprbars` compatible con el compositor. Revisa las confirmaciones
+que muestre hyprpm. Si falla la compilación, el script se detiene.
+
+Añade una barra de título industrial con × a las ventanas normales. Las ventanas
+en pantalla completa no muestran decoración. Algunas aplicaciones pueden mostrar
+además su propia cabecera. Se guarda una copia de `hyprland.conf` antes de modificarlo;
+no se reemplazan los ajustes personales. Usa `--config RUTA` para otro archivo Hyprland.
+
+Para retirar esta integración opcional, ejecuta `./enable-window-bars.sh --remove`
+antes de desinstalar el escritorio. El plugin compartido se conserva; si ya no lo
+utilizas, puedes desactivarlo con `hyprpm disable hyprbars`.
+Tras actualizar Hyprland, puede ser necesario ejecutar `hyprpm update` y
+`hyprpm reload`. La instalación y compilación del plugin necesitan validación en
+la máquina Arch de destino; aquí se probaron las copias, idempotencia y retirada
+del bloque de configuración.
