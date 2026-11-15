@@ -75,11 +75,12 @@ class EventTests(unittest.TestCase):
 
 class LibraryTests(unittest.TestCase):
     def test_builtins_have_unique_identity_real_animation_and_metadata(self):
-        lib=Library(Path('/nonexistent'));self.assertGreaterEqual(len(lib.items),2)
+        lib=Library(Path('/nonexistent'));self.assertEqual(len(lib.items),6)
         if os.environ.get('DSD_MEDIA_DIR'):self.assertEqual(len(lib.items),6);self.assertEqual(lib.warnings,[])
         for s in lib.items.values():
             self.assertTrue(s['personality']);self.assertTrue(s['events']);self.assertTrue(s['dialogues']['talk'])
             from urllib.parse import urlparse,unquote
+            if not s['available']:continue
             video=Path(unquote(urlparse(s['videoUrl']).path))
             r=subprocess.run(['ffprobe','-v','error','-count_frames','-show_entries','stream=nb_read_frames,codec_name','-of','json',str(video)],capture_output=True,text=True,check=True)
             data=json.loads(r.stdout)['streams'][0];self.assertGreater(int(data['nb_read_frames']),48);self.assertEqual(data['codec_name'],'h264')
@@ -87,6 +88,13 @@ class LibraryTests(unittest.TestCase):
             r=subprocess.run(['ffmpeg','-v','error','-i',str(video),'-vf','select=eq(n\\,0)+eq(n\\,48)','-vsync','0','-an','-f','framemd5','-'],capture_output=True,text=True,check=True)
             hashes=[l.split(',')[-1].strip() for l in r.stdout.splitlines() if not l.startswith('#')]
             self.assertEqual(len(hashes),2);self.assertNotEqual(hashes[0],hashes[1],s['id'])
+    def test_optional_media_does_not_disable_scene_features(self):
+        with patch.dict(os.environ,{'DSD_MEDIA_DIR':'/nonexistent/dsd-media'}):
+            lib=Library(Path('/nonexistent'))
+            self.assertEqual(len(lib.items),6);self.assertEqual(lib.warnings,[])
+            self.assertEqual(sum(s['available'] for s in lib.items.values()),2)
+            self.assertTrue(lib.items['station']['apps']);self.assertTrue(lib.items['station']['dialogues'])
+
     def test_pack_path_traversal_and_symlink_escape(self):
         with tempfile.TemporaryDirectory() as d:
             folder=Path(d)/'pack';folder.mkdir();outside=Path(d)/'private';outside.write_text('private')

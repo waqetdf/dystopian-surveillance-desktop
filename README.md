@@ -8,7 +8,7 @@ Arch/Hyprland.** No se presenta como una versión certificada para uso diario.
 Consulta [VALIDATION.md](docs/VALIDATION.md) para distinguir pruebas ejecutadas
 de comprobaciones que necesitan una sesión real del compositor.
 
-![Interfaz ejecutándose con los vídeos seleccionados](docs/screenshots/desktop.png)
+![Interfaz con la colección opcional de vídeos cargada](docs/screenshots/desktop.png)
 
 ## Instalar
 
@@ -24,8 +24,11 @@ Ejecuta el instalador **como tu usuario**, no con `sudo`. Solo `pacman` solicita
 privilegios. Se usan los repositorios oficiales firmados de Arch, sin AUR ni
 scripts descargados y ejecutados mediante una tubería. Si faltan dependencias,
 se hace `pacman -Syu --needed` para evitar una actualización parcial de Arch.
-Se descargan también cuatro fondos desde sus proveedores, verificados por SHA-256,
-para uso personal. Lee la propuesta de cambios y confirma la instalación.
+La instalación del núcleo no depende de proveedores de vídeos. Se incluyen tus
+dos archivos aportados; las otras cuatro cámaras conservan sus menús y diálogos
+y muestran «Elegir vídeo» hasta asignarles uno. Lee la propuesta de cambios y
+confirma la instalación. La colección adicional es opcional: `./install.sh
+--with-curated-media`, o el botón correspondiente en Ajustes → Animaciones.
 
 Después, dentro de Hyprland:
 
@@ -44,9 +47,9 @@ que realmente cargas. El instalador admite la ruta XDG estándar.
 
 ## Qué incluye
 
-- Tus dos MP4 originales y cuatro vídeos similares encontrados en la web.
+- Tus dos MP4 originales y una selección opcional de cuatro vídeos similares encontrados en la web.
   Escenas anime/cyberpunk, miniaturas y procedencia documentada. Los medios de
-  terceros se descargan localmente con SHA-256, sin redistribuir los archivos
+  terceros se pueden descargar localmente con SHA-256, sin redistribuir los archivos
   en Git. Código MIT; licencias de medios independientes.
 - Mosaico asimétrico adaptable, editor gráfico de posición/tamaño, división y
   eliminación de paneles, perfiles y restauración de la distribución inicial.
@@ -79,6 +82,10 @@ En Ajustes, los cambios son un borrador hasta pulsar **Aplicar**. Los rectángul
 usan coordenadas relativas entre 0 y 1; no se guardan diseños con solapamientos
 ni paneles fuera de pantalla. La previsualización de vídeo tiene su audio
 silenciado; el sonido solo se reproduce en una cámara ampliada y habilitada.
+
+Elige los vídeos en **Ajustes → Animaciones**. Ninguna descarga externa es
+obligatoria para configurar paneles, menús, personajes o aplicaciones. Si un
+proveedor devuelve 403, usa archivos locales; no se intentan eludir sus controles.
 
 Las importaciones se copian y convierten a MP4 H.264, con un máximo de 5 minutos
 y 2 GiB por archivo. Nunca se modifica el original. La reproducción repetida
@@ -135,7 +142,7 @@ de paquetes de pacman ni el borrado de datos personales.
 
 ```bash
 python3 -m unittest discover -s tests -v
-# Preparar los cuatro vídeos externos (lo hace install.sh automáticamente).
+# Opcional: preparar la colección de vídeos externa.
 python3 tools/fetch_media.py
 # Prueba visual opcional fuera de Hyprland: requiere pyside6.
 python3 tools/preview.py

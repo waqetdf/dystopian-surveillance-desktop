@@ -27,9 +27,14 @@ python3 tools/preview.py
 ```
 
 Para otra ubicación, exporta `DSD_MEDIA_DIR=/ruta/privada/medios` antes de ejecutar
-ambos comandos. `install.sh` prepara los cuatro vídeos automáticamente en
-`~/.local/share/dystopian-surveillance/bundled-media`. Necesita internet solo
-para la descarga inicial; después todo el escritorio funciona sin conexión.
+ambos comandos. `install.sh --with-curated-media` prepara los cuatro vídeos opcionales en
+`~/.local/share/dystopian-surveillance/bundled-media`. La instalación normal no los descarga. Los seis menús y sus personajes funcionan
+aunque estas cuatro cámaras aún no tengan vídeo asignado.
+
+La descarga inicial necesita internet. El proveedor puede rechazar conexiones
+(como ocurrió con HTTP 403 desde GitHub Actions); esto no bloquea el núcleo ni
+la importación de archivos locales. Después de asignar medios locales, toda la
+interfaz funciona sin conexión.
 
 La copia preparada se conserva entre actualizaciones y la descarga idempotente
 comprueba el recibo antes de reutilizarla. El directorio de medios no forma parte

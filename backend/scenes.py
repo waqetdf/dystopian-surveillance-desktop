@@ -36,10 +36,13 @@ class Library:
                     for e in s['events']: validate_event(e)
                     if not isinstance(s['apps'], list) or not isinstance(s['dialogues'], dict): raise ValueError('Escena inválida')
                     media_folder = Path(os.environ.get('DSD_MEDIA_DIR',str(xdg('data')/'bundled-media'))) / s['id'] if s.get('remote') else manifest.parent
-                    video=local_file(media_folder,s['video'])
-                    if video.suffix.lower() not in ('.mp4','.webm','.mkv'): raise ValueError('Vídeo no compatible')
-                    thumb=local_file(media_folder,s['thumbnail'])
-                    s['videoUrl'] = video.as_uri(); s['thumbnailUrl'] = thumb.as_uri()
+                    if s.get('remote') and not (media_folder/s['video']).is_file():
+                        s['videoUrl']='';s['thumbnailUrl']='';s['available']=False
+                    else:
+                        video=local_file(media_folder,s['video'])
+                        if video.suffix.lower() not in ('.mp4','.webm','.mkv'): raise ValueError('Vídeo no compatible')
+                        thumb=local_file(media_folder,s['thumbnail'])
+                        s['videoUrl']=video.as_uri();s['thumbnailUrl']=thumb.as_uri();s['available']=True
                     s['builtin'] = base == ROOT / 'assets/scenes'
                     self.items[s['id']] = s
                 except (ValueError, KeyError, TypeError, OSError) as e:

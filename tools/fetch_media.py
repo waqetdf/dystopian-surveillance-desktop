@@ -25,12 +25,13 @@ def sha(path):
     return h.hexdigest()
 
 
-def acquire(item, destination, source_cache=None):
+def acquire(item, destination, source_cache=None, report=None):
+    report=report or (lambda message: print(message,flush=True))
     target=destination/item['id'];receipt=target/'receipt.json'
     if receipt.exists():
         r=json.loads(receipt.read_text())
         if r['sourceSHA256']==item['sha256'] and all((target/n).is_file() and sha(target/n)==v for n,v in r['files'].items()):
-            print(item['id']+': ya verificado',flush=True);return
+            report(item['id']+': ya verificado');return
         raise ValueError(f'El paquete local {target} fue modificado o cambió de versión. Conserva tu copia y retíralo antes de volver a descargar.')
     if target.exists():raise ValueError(f'No se sobrescribe la carpeta existente {target}')
     destination.mkdir(parents=True,exist_ok=True,mode=0o700)
@@ -39,7 +40,7 @@ def acquire(item, destination, source_cache=None):
         cached=Path(source_cache)/item['id']/'source.mp4' if source_cache else None
         if cached and cached.is_file() and sha(cached)==item['sha256']:shutil.copyfile(cached,source)
         else:
-            print('Descargando '+item['page'],flush=True)
+            report('Descargando '+item['page'])
             subprocess.run(['curl','--fail','--location','--proto','=https','--proto-redir','=https',
                             '--max-filesize','104857600','--connect-timeout','20','--max-time','300','--retry','2',
                             '--silent','--show-error',item['url'],'-o',str(source)],check=True)
@@ -55,7 +56,7 @@ def acquire(item, destination, source_cache=None):
         atomic_json(stage/'receipt.json',{'sourceSHA256':item['sha256'],'page':item['page'],'license':item['license'],
                     'files':{name:sha(stage/name) for name in ('scene.mp4','thumbnail.png')}})
         stage.rename(target)
-    print(item['id']+': preparado y verificado',flush=True)
+    report(item['id']+': preparado y verificado')
 
 
 def main():

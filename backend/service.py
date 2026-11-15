@@ -41,11 +41,18 @@ class Service:
     def schedule_playback(self):
         self.playback_epoch+=1;self.library.playback_urls={}
         fps=self.store.value['performance']['fps']
-        scenes=list(self.library.items.values())
+        scenes=[s for s in self.library.items.values() if s.get('videoUrl')]
         if any(float(s.get('frameRate',30))>fps for s in scenes):
             job=self.pool.submit(prepare_copies,copy.deepcopy(scenes),fps)
             self.jobs[job]=('playback','',self.playback_epoch)
             self.output({'type':'notice','text':'Preparando copias locales con el límite FPS. Se reutilizarán en próximos arranques.'})
+
+    def fetch_curated(self):
+        from tools.fetch_media import acquire, media_root
+        from backend.config import ROOT
+        for item in json.loads((ROOT/'assets/remote.json').read_text()):
+            acquire(item,media_root(),report=lambda message: None)
+        return True
 
     @staticmethod
     def send(data):
@@ -102,8 +109,12 @@ class Service:
                 self.children.append(subprocess.Popen(argv,stdin=subprocess.DEVNULL,stdout=subprocess.DEVNULL,
                                          stderr=subprocess.DEVNULL,start_new_session=True,close_fds=True))
             self.emit_event(self.events.choose(s,'app',c['dialogue']['frequency'],app=aid))
+        elif op=='fetchCurated':
+            if any(v[0] in ('import','pack','curated') for v in self.jobs.values()): raise ValueError('Ya hay una operación de medios pendiente')
+            job=self.pool.submit(self.fetch_curated);self.jobs[job]=('curated','',self.ai_epoch)
+            self.output({'type':'notice','text':'Descargando selección opcional desde los proveedores. Puedes seguir usando el escritorio.'})
         elif op in ('import','pack'):
-            if any(v[0] in ('import','pack') for v in self.jobs.values()): raise ValueError('Ya hay una importación en curso')
+            if any(v[0] in ('import','pack','curated') for v in self.jobs.values()): raise ValueError('Ya hay una importación en curso')
             if op=='import': job=self.pool.submit(self.library.import_video,m['path'],m.get('name',''),m.get('category','Ciudad'),min(c['performance']['fps'],30),c['performance']['quality'])
             else: job=self.pool.submit(self.library.import_pack,m['path'])
             self.jobs[job]=(op,'',self.ai_epoch)
@@ -142,6 +153,8 @@ class Service:
                 result=job.result()
                 if kind in ('import','pack'):
                     self.schedule_playback();self.state();self.output({'type':'imported','scene':result})
+                elif kind=='curated':
+                    self.library.reload();self.schedule_playback();self.state();self.output({'type':'catalogReady'})
                 elif kind=='playback':
                     if epoch==self.playback_epoch:
                         self.library.playback_urls=result;self.state();self.output({'type':'notice','text':'Límite FPS aplicado a los vídeos.'})
@@ -167,6 +180,7 @@ class Service:
     @staticmethod
     def error_text(e):
         if isinstance(e,subprocess.CalledProcessError):
+            if e.cmd and e.cmd[0]=='curl':return 'El proveedor no permite la descarga en esta conexión o no está disponible. Elige un vídeo local en Animaciones.'
             return 'El conversor de vídeo falló. Comprueba que el archivo se reproduce con ffmpeg.'
         # Never return HTTP response bodies, request headers or credential payloads.
         if isinstance(e, (KeyError,TypeError)): return 'Formato no válido: '+str(e)[:200]

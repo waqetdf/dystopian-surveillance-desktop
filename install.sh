@@ -29,7 +29,16 @@ if (( ${#missing[@]} )); then
   echo 'Se hará una actualización completa para evitar actualizaciones parciales de Arch.'
   sudo pacman -Syu --needed "${packages[@]}"
 fi
-python3 tools/fetch_media.py
-python3 tools/deploy.py install "$@"
+deployment_args=()
+with_curated_media=0
+for argument in "$@"; do
+  if [[ "$argument" == --with-curated-media ]]; then with_curated_media=1; else deployment_args+=("$argument"); fi
+done
+python3 tools/deploy.py install "${deployment_args[@]}"
+if (( with_curated_media )); then
+  if ! python3 tools/fetch_media.py; then
+    echo 'La selección opcional no se pudo descargar. La interfaz está instalada; elige vídeos locales desde Ajustes.' >&2
+  fi
+fi
 python3 tools/doctor.py
 echo 'Instalación comprobada. Activa el escritorio dentro de Hyprland con ~/.local/bin/dsd start.'

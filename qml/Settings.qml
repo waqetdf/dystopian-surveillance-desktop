@@ -28,7 +28,7 @@ ApplicationWindow {
     onClosing: { app.settingsVisible=false; }
     onVisibleChanged: if(visible) resetDraft()
     function clone(v) { return JSON.parse(JSON.stringify(v)); }
-    function resetDraft() { draft=clone(app.config);initialized=true;localError="";loadScene(); }
+    function resetDraft() { draft=clone(app.config); let id=app.settingsPanel||app.activePanel; let i=draft.panels.findIndex(p=>p.id===id); if(i>=0)panelIndex=i; initialized=true;localError="";loadScene(); }
     function refresh() { draft=clone(draft);revision++; }
     function loadScene() {
         if(!selectedScene) return;
@@ -174,6 +174,7 @@ ApplicationWindow {
                             ActionButton { text:app.busyImport?"Importando…":"Importar vídeo / GIF";enabled:!app.busyImport;onClicked:importDialog.open() }
                             ActionButton { text:"Paquete";enabled:!app.busyImport;onClicked:packDialog.open() }
                         }
+                        ActionButton { text:"Descargar selección sugerida (internet)";enabled:!app.busyImport;onClicked:{app.busyImport=true;app.send("fetchCurated");} }
                         Label { text:"La importación crea una copia H.264 local (máximo 5 minutos); el original se conserva. Los paquetes son carpetas con scene.json y medios.";wrapMode:Text.Wrap;Layout.fillWidth:true;color:"#819aa6" }
                         Repeater {
                             model:[{k:"scale",l:"Escala",min:1,max:4,step:.05},{k:"offsetX",l:"Desplazamiento X",min:-1,max:1,step:.05},{k:"offsetY",l:"Desplazamiento Y",min:-1,max:1,step:.05},

@@ -11,6 +11,7 @@ QtObject {
     property string activeScreen: ""
     property string activeScene: ""
     property bool settingsVisible: false
+    property string settingsPanel: ""
     property string notice: ""
     property bool noticeError: false
     property var dialogLines: []
@@ -41,6 +42,7 @@ QtObject {
         } else if (m.type === "error") { saving = false; busyImport = false; flash(m.text, true); }
         else if (m.type === "notice") flash(m.text, false);
         else if (m.type === "settings") settingsVisible = true;
+        else if (m.type === "catalogReady") { busyImport=false; flash("Selección opcional disponible en la biblioteca.",false); }
         else if (m.type === "imported") { busyImport = false; imported(m.scene); flash("Animación importada.", false); }
     }
     function flash(text, error) { notice = text; noticeError = error; noticeTimer.restart(); }

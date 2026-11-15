@@ -20,7 +20,7 @@ manifiesto. Las miniaturas son fotogramas de esos mismos vídeos.
 ## Selección adicional encontrada en la web
 
 Los cuatro vídeos adicionales **no se incluyen como archivos en Git**. El
-instalador los descarga desde el proveedor para el escritorio personal del
+instalador, con `--with-curated-media`, o el botón de Ajustes los descarga desde el proveedor para el escritorio personal del
 usuario, verifica el SHA-256 del original y crea una copia H.264 local a 720p/24
 FPS. La descarga no ejecuta programas del proveedor. No se retiran marcas de agua.
 

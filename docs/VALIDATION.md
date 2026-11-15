@@ -4,7 +4,7 @@ Resultados ejecutados el **15 de noviembre de 2026** en Debian 13:
 
 | Prueba | Resultado |
 |---|---|
-| `python3 -m unittest discover -s tests -v` | **32 pruebas aprobadas** |
+| `python3 -m unittest discover -s tests -v` | **33 pruebas aprobadas** |
 | `tools/test_ui.py`, Qt Quick con OpenGL sobre Xvfb | **Aprobado**: seis reproducciones reales, clics, selección única, geometría, diálogos, reconexión, ocho páginas, sustitución e importación de vídeo, persistencia |
 | `tools/test_wayland.py`, Quickshell 0.3.0 + Qt 6.8.2 sobre Sway 1.10.1 headless | **Aprobado**: layer-shell real, servicio, cambio de escena, cierre, ventana de ajustes, IPC y salida limpia |
 | `install.sh`, `update.sh`, `uninstall.sh` con `--test-root` | **Aprobado**: sin privilegios ni cambios al sistema anfitrión |
@@ -22,7 +22,9 @@ observadas en este entorno no se presentan como un benchmark de uso cotidiano.
 - Estados de desconexión/reconexión e interpolación ambiental.
 - Ausencia de solicitudes IA mientras está desactivada.
 - Argumentos literales de aplicaciones, sin intérprete de comandos.
-- Medios reales: seis vídeos H.264 existentes, con múltiples fotogramas distintos.
+- Medios reales: seis vídeos H.264 existentes comprobados localmente. La suite
+  sin red verifica los dos MP4 incluidos; los cuatro externos son opcionales.
+- Los seis menús y personajes siguen disponibles cuando faltan vídeos opcionales.
 - Importación/transcodificación y paquetes sin ejecución de scripts.
 - Integridad SHA-256 de los recursos distribuidos.
 - Despliegue aislado, repetición idempotente, preservación de cambios personales,
@@ -35,7 +37,7 @@ observadas en este entorno no se presentan como un benchmark de uso cotidiano.
 En una máquina o VM Arch actualizada con GPU/controladores adecuados:
 
 1. Instala desde un usuario limpio con `./install.sh`; reinicia sesión Hyprland.
-2. Confirma seis cámaras animadas, sin errores de Qt/FFmpeg, durante 30 minutos.
+2. Asigna vídeos a las seis cámaras y confirma reproducción sin errores durante 30 minutos.
 3. Abre/cierra y cambia rápidamente de cámara. Nunca deben coexistir dos menús.
 4. Abre terminal, navegador, archivos, mpv y htop. Comprueba teclado, foco,
    atajos, espacios de trabajo, fullscreen y ventanas superpuestas.
@@ -52,6 +54,11 @@ En una máquina o VM Arch actualizada con GPU/controladores adecuados:
 12. Repite una instalación limpia. No debe haber entradas de autostart duplicadas.
 
 ## Límites explícitos
+
+- El núcleo se instala sin descargar vídeos externos. Cuatro cámaras están listas
+  para elegir vídeo desde Ajustes; la colección de terceros es opcional. Se
+  observó HTTP 403 en GitHub Actions al intentar obtenerla, por lo que la CI
+  no depende de esos proveedores y no se eluden sus restricciones.
 
 - Las escenas siguen los dos vídeos anime/cyberpunk aportados posteriormente
   por el usuario. Se retiraron las ilustraciones procedurales iniciales.

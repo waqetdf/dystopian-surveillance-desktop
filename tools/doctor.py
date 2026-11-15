@@ -26,6 +26,8 @@ def main():
     errors.extend(library.warnings)
     for sid,s in library.items.items():
         from urllib.parse import unquote,urlparse
+        if not s.get('videoUrl'):
+            print(sid+': vídeo opcional sin asignar; elige un archivo en Ajustes');continue
         if not shutil.which('ffprobe'):break
         r=subprocess.run(['ffprobe','-v','error','-show_entries','stream=codec_name,width,height','-of','json',unquote(urlparse(s['videoUrl']).path)],capture_output=True,text=True)
         print(sid+': '+(r.stdout.strip() if r.returncode==0 else 'ERROR'))

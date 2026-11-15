@@ -14,7 +14,7 @@ def prepare_copies(scenes, fps, cache=None):
     cache=cache or xdg('cache')/'playback'; cache.mkdir(parents=True,exist_ok=True,mode=0o700)
     urls={}
     for scene in scenes:
-        if float(scene.get('frameRate',30)) <= fps:continue
+        if not scene.get('videoUrl') or float(scene.get('frameRate',30)) <= fps:continue
         source=Path(unquote(urlparse(scene['videoUrl']).path));st=source.stat()
         key=hashlib.sha256(f'{source}:{st.st_size}:{st.st_mtime_ns}:{int(fps)}'.encode()).hexdigest()
         dest=cache/(key+'.mp4')
