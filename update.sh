@@ -18,7 +18,7 @@ esac
 git fetch origin main --tags
 git fsck --no-reflogs
 revision=$(git rev-parse origin/main)
-git log --oneline HEAD.."$revision"
+git --no-pager log --oneline HEAD.."$revision"
 printf 'Revisión obtenida del origen verificado: %s\nSe conservarán configuración, historial y vídeos personales.\n' "$revision"
 read -r -p '¿Instalar esta revisión? [s/N] ' answer
 case "$answer" in s|S|si|sí|y|yes) ;; *) exit 0;; esac
