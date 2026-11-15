@@ -5,9 +5,10 @@ import QtQuick.Dialogs
 
 ApplicationWindow {
     id: settings
+    objectName:"settingsWindow"
     required property var app
     width:1120;height:820;minimumWidth:800;minimumHeight:600
-    title:"Dystopian Surveillance · Centro de control"
+    title:app.ready?app.config.labels.title+" · "+app.config.labels.settings:"Ajustes"
     color:"#111b22"
     font.family: "DejaVu Sans Mono"
     font.pixelSize: 12
@@ -25,8 +26,12 @@ ApplicationWindow {
     property string category:"Todas"
     property string localError:""
     property bool initialized:false
-    onClosing: { app.settingsVisible=false; }
-    onVisibleChanged: if(visible) resetDraft()
+    onClosing: { app.settingsVisible=false; initialized=false; }
+    property bool completed:false
+    Component.onCompleted: { completed=true; resetDraft(); if(visible) Qt.callLater(present); }
+    onVisibleChanged: if(visible && completed) Qt.callLater(present)
+    function present() { if(!visible || !app.ready)return; if(!initialized)resetDraft(); raise(); requestActivate(); }
+    Connections { target:settings.app; function onSettingsRequested() { Qt.callLater(settings.present); } }
     function clone(v) { return JSON.parse(JSON.stringify(v)); }
     function resetDraft() { draft=clone(app.config); let id=app.settingsPanel||app.activePanel; let i=draft.panels.findIndex(p=>p.id===id); if(i>=0)panelIndex=i; initialized=true;localError="";loadScene(); }
     function refresh() { draft=clone(draft);revision++; }
@@ -63,8 +68,8 @@ ApplicationWindow {
         RowLayout {
             Layout.fillWidth:true
             Column {
-                Label { text:"CONTROL / CONFIGURATION";font.pixelSize:23;font.bold:true;color:"#d1dde1" }
-                Label { text:"SECTOR 09  ·  Los cambios se guardan con Aplicar";font.pixelSize:11;color:"#829da9" }
+                Label { text:app.ready?app.config.labels.controlTitle:"";font.pixelSize:23;font.bold:true;color:"#d1dde1" }
+                Label { text:(app.ready?app.config.labels.sector:"")+" · Los cambios se guardan con Aplicar";font.pixelSize:11;color:"#829da9" }
             }
             Item { Layout.fillWidth:true }
             ActionButton { text:"Descartar cambios";onClicked:settings.resetDraft() }
@@ -89,6 +94,13 @@ ApplicationWindow {
                     ColumnLayout {
                         width:parent.width;spacing:12
                         Label { text:"APARIENCIA Y AMBIENTE";font.pixelSize:18;color:"#c5d4db" }
+                        Label { text:"NOMBRES DEL ESCRITORIO";color:"#c5d4db" }
+                        Repeater {
+                            model:[{k:"title",l:"Título principal"},{k:"subtitle",l:"Subtítulo"},{k:"settings",l:"Botón de ajustes"},{k:"controlTitle",l:"Título del centro de control"},{k:"sector",l:"Sector"},{k:"uplink",l:"Título del menú de escena"},{k:"talk",l:"Botón de conversación"},{k:"lost",l:"Mensaje de desconexión"}]
+                            ConfigField { required property var modelData;target:settings.draft.labels;field:modelData.k;label:modelData.l }
+                        }
+                        Label { text:"Cámaras: Paneles · Escenas y personajes: Personajes · Accesos: Aplicaciones";wrapMode:Text.Wrap;Layout.fillWidth:true;color:"#829da9" }
+
                         Repeater {
                             model:[{k:"accent",l:"Color de borde (#RRGGBB)"},{k:"background",l:"Fondo (#RRGGBB)"},{k:"font",l:"Familia tipográfica"},
                                 {k:"border",l:"Grosor del borde",t:"number",min:0,max:5},{k:"gap",l:"Separación",t:"number",min:0,max:24},
@@ -106,7 +118,8 @@ ApplicationWindow {
                     ColumnLayout {
                         width:parent.width;spacing:12
                         Label { text:"MOSAICO DE CÁMARAS";font.pixelSize:18;color:"#c5d4db" }
-                        ComboBox { id:panelPicker;Layout.fillWidth:true;model:settings.draft.panels?settings.draft.panels.map(p=>p.id+" · "+p.scene):[];currentIndex:settings.panelIndex;onActivated:settings.selectPanel(currentIndex) }
+                        ComboBox { id:panelPicker;Layout.fillWidth:true;model:settings.draft.panels?settings.draft.panels.map(p=>(p.name||p.id)+" · "+p.scene):[];currentIndex:settings.panelIndex;onActivated:settings.selectPanel(currentIndex) }
+                        ConfigField { target:settings.panel;field:"name";label:"Nombre de cámara (vacío = identificador)" }
                         Rectangle {
                             id:layoutMap;Layout.fillWidth:true;Layout.preferredHeight:235;color:"#080f14";border.color:"#415c68"
                             Repeater {
@@ -153,7 +166,7 @@ ApplicationWindow {
                     ColumnLayout {
                         width:parent.width;spacing:12
                         Label { text:"BIBLIOTECA DE ANIMACIONES";font.pixelSize:18;color:"#c5d4db" }
-                        ComboBox { Layout.fillWidth:true;model:settings.draft.panels?settings.draft.panels.map(p=>p.id+" · "+p.scene):[];currentIndex:settings.panelIndex;onActivated:settings.selectPanel(currentIndex) }
+                        ComboBox { Layout.fillWidth:true;model:settings.draft.panels?settings.draft.panels.map(p=>(p.name||p.id)+" · "+p.scene):[];currentIndex:settings.panelIndex;onActivated:settings.selectPanel(currentIndex) }
                         VideoPanel { Layout.fillWidth:true;Layout.preferredHeight:250;app:settings.app;panel:settings.panel||app.defaults.panels[0];preview:true;playingAllowed:settings.visible&&tabs.currentIndex===2;visible:!!settings.panel }
                         Label { text:settings.selectedScene ? ("Procedencia: "+(settings.selectedScene.source ? (settings.selectedScene.source.url || settings.selectedScene.source.filename || "Importación personal") : "Importación personal")) : ""; Layout.fillWidth:true;wrapMode:Text.Wrap;color:"#829ba8";font.pixelSize:10 }
                         ComboBox { model:["Todas","Ciudad","Interiores","Personajes","Industrial","Naturaleza distópica","Transporte","Tecnología","Escenas nocturnas"];onActivated:settings.category=currentText }
@@ -195,7 +208,7 @@ ApplicationWindow {
                     ColumnLayout {
                         width:parent.width;spacing:12
                         Label { text:"PERSONAJES / DIÁLOGOS / EVENTOS";font.pixelSize:18;color:"#c5d4db" }
-                        ComboBox { Layout.fillWidth:true;model:settings.draft.panels?settings.draft.panels.map(p=>p.id+" · "+p.scene):[];currentIndex:settings.panelIndex;onActivated:settings.selectPanel(currentIndex) }
+                        ComboBox { Layout.fillWidth:true;model:settings.draft.panels?settings.draft.panels.map(p=>(p.name||p.id)+" · "+p.scene):[];currentIndex:settings.panelIndex;onActivated:settings.selectPanel(currentIndex) }
                         ConfigField { target:settings.draft.dialogue;field:"enabled";label:"Mostrar globos";kind:"bool" }
                         ConfigField { target:settings.draft.dialogue;field:"duration";label:"Segundos por intervención";kind:"number";minimum:2;maximum:60 }
                         ConfigField { target:settings.draft.dialogue;field:"frequency";label:"Frecuencia (0 = sin eventos)";kind:"number";minimum:0;maximum:5;step:.1 }

@@ -31,12 +31,12 @@ ShellRoot {
     }
     property bool fullscreen:ToplevelManager.toplevels.values.some(t=>t.activated&&t.fullscreen)
     onFullscreenChanged:desktopState.fullscreen=fullscreen
-    Loader { active:desktopState.ready && desktopState.settingsVisible; sourceComponent:Settings { app:desktopState } }
+    Loader { active:desktopState.ready; sourceComponent:Settings { app:desktopState } }
     IpcHandler {
         target:"control"
         function open(panelId:string):void { let p=desktopState.ready?desktopState.config.panels.find(p=>p.id===panelId):null; if(p && Quickshell.screens.length) desktopState.select(p,Quickshell.screens[0].name); }
         function status():string { return JSON.stringify({ready:desktopState.ready,panels:desktopState.ready?desktopState.config.panels.length:0,activePanel:desktopState.activePanel,settings:desktopState.settingsVisible,economy:desktopState.economy}); }
-        function settings():void { desktopState.settingsVisible=true; }
+        function settings():void { desktopState.openSettings(); }
         function close():void { desktopState.close(); }
         function quit():void { Qt.quit(); }
     }

@@ -16,12 +16,12 @@ Rectangle {
     RowLayout {
         x:18;y:12;width:parent.width-36;height:32
         Column {
-            Text { text:"DYSTOPIAN / SURVEILLANCE"; color:"#c6d2d7";font.family:"DejaVu Sans Mono";font.pixelSize:14;font.bold:true }
-            Text { text:"MUNICIPAL OBSERVATION NETWORK     //     SECTOR 09";color:"#718b98";font.family:"DejaVu Sans Mono";font.pixelSize:9 }
+            Text { text:desk.app.ready?desk.app.config.labels.title:""; color:"#c6d2d7";font.family:"DejaVu Sans Mono";font.pixelSize:14;font.bold:true }
+            Text { text:desk.app.ready?desk.app.config.labels.subtitle:"";color:"#718b98";font.family:"DejaVu Sans Mono";font.pixelSize:9 }
         }
         Item { Layout.fillWidth:true }
         Text { visible:desk.width>720;text:clock.text; color:"#8da4af";font.family:"DejaVu Sans Mono";font.pixelSize:12 }
-        ActionButton { objectName:"settingsButton";text:"AJUSTES";onClicked:desk.app.settingsVisible=true }
+        ActionButton { objectName:"settingsButton";text:desk.app.ready?desk.app.config.labels.settings:"";onClicked:desk.app.openSettings() }
     }
     Item {
         id:feeds;x:12;y:59;width:parent.width-24;height:parent.height-93
@@ -59,7 +59,7 @@ Rectangle {
                     width:menu.width-32;spacing:12
                     RowLayout {
                         Layout.fillWidth:true
-                        Label { text:"UPLINK ESTABLISHED";color:"#91b9b5";font.pixelSize:10;Layout.fillWidth:true }
+                        Label { text:desk.app.ready?desk.app.config.labels.uplink:"";color:"#91b9b5";font.pixelSize:10;Layout.fillWidth:true }
                         ActionButton { text:"×";implicitWidth:32;onClicked:desk.app.close() }
                     }
                     Label { text:menu.scene?menu.scene.name:"";font.pixelSize:22;color:"#d1d9db";wrapMode:Text.Wrap;Layout.fillWidth:true }
@@ -80,7 +80,7 @@ Rectangle {
                             }
                         }
                     }
-                    ActionButton { Layout.fillWidth:true;text:"Hablar · diálogo local";onClicked:desk.app.send("talk",{scene:desk.app.activeScene}) }
+                    ActionButton { Layout.fillWidth:true;text:desk.app.ready?desk.app.config.labels.talk:"";onClicked:desk.app.send("talk",{scene:desk.app.activeScene}) }
                     TextField { id:prompt;visible:desk.app.ready&&desk.app.config.ai.enabled;placeholderText:"Mensaje al personaje…";Layout.fillWidth:true;maximumLength:4000 }
                     ActionButton { visible:prompt.visible;text:"Enviar a IA activada";Layout.fillWidth:true;enabled:prompt.text.trim().length>0;onClicked:{desk.app.send("ai",{scene:desk.app.activeScene,text:prompt.text});prompt.clear();} }
                     Label { text:"ESC para cerrar  /  conexión ficticia";color:"#6d8795";font.pixelSize:9;Layout.fillWidth:true;wrapMode:Text.Wrap }

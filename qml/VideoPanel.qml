@@ -70,7 +70,7 @@ Rectangle {
         Text { width:parent.width;text:"Elige el vídeo de esta escena\nen Ajustes → Animaciones.";color:"#718b98";font.pixelSize:11;horizontalAlignment:Text.AlignHCenter }
     }
     Rectangle { x:4; y:4; width:parent.width-8; height:21; color:"#121b21" }
-    Text { x:12; y:7; text:card.panel.id.toUpperCase()+" / "+(card.scene?card.scene.name.toUpperCase():"SIN SEÑAL"); color:"#b1c1c7"; font.family:card.app.config.appearance.font; font.pixelSize:10; width:parent.width-62; elide:Text.ElideRight }
+    Text { x:12; y:7; text:(card.panel.name || card.panel.id)+" / "+(card.scene?card.scene.name:"SIN SEÑAL"); color:"#b1c1c7"; font.family:card.app.config.appearance.font; font.pixelSize:10; width:parent.width-62; elide:Text.ElideRight }
     Rectangle { width:5; height:5; x:parent.width-17; y:12; color:card.lost ? "#b65a4a" : card.scene && card.scene.available===false ? "#b68a57" : "#86b5ad" }
     Text { x:12; anchors.bottom:parent.bottom; anchors.bottomMargin:7; text:card.scene && card.scene.available===false ? "NO MEDIA / SELECT VIDEO" : card.lost ? "SIGNAL / OFFLINE" : card.selected ? "UPLINK / ACTIVE" : "LIVE FEED / ENCRYPTED"; color:"#6f8b98"; font.pixelSize:9; font.family:card.app.config.appearance.font }
     MouseArea { anchors.fill:parent; enabled:!card.preview; cursorShape:Qt.PointingHandCursor; onClicked:card.clicked() }
@@ -103,7 +103,7 @@ Rectangle {
         anchors.fill:parent; anchors.margins:3; visible:card.lost; color:"#0c1319"
         Column {
             anchors.centerIn:parent; spacing:12; width:Math.min(parent.width-24,260)
-            Text { width:parent.width;text:"CONNECTION LOST"; color:"#c2967b"; font.family:card.app.config.appearance.font; font.pixelSize:Math.min(22,card.width/17);horizontalAlignment:Text.AlignHCenter }
+            Text { width:parent.width;text:card.app.config.labels.lost; color:"#c2967b"; font.family:card.app.config.appearance.font; font.pixelSize:Math.min(22,card.width/17);horizontalAlignment:Text.AlignHCenter }
             Text { width:parent.width;text:"CÁMARA SIN RESPUESTA\nLa red del sistema sigue activa.";color:"#7c929e";font.pixelSize:11;horizontalAlignment:Text.AlignHCenter }
             ActionButton { width:parent.width;text:"Reconectar cámara";onClicked:card.app.reconnectSerial++ }
         }

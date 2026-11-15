@@ -18,7 +18,7 @@ RowLayout {
         visible:row.kind==="number";editable:true
         property int factor:row.step<1?1000:1
         from:Math.round(row.minimum*factor);to:Math.round(row.maximum*factor);stepSize:Math.max(1,Math.round(row.step*factor))
-        value:row.target?Math.round(row.target[row.field]*factor):0
+        value:row.kind==="number" && row.target?Math.round(row.target[row.field]*factor):0
         textFromValue:function(v,locale){return Number(v/factor).toLocaleString(locale,'f',factor===1?0:3)}
         valueFromText:function(text,locale){return Math.round(Number.fromLocaleString(locale,text)*factor)}
         onValueModified:row.target[row.field]=value/factor

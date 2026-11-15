@@ -39,6 +39,7 @@ def default_config():
              ('laboratory', .54, .40, .46, .36), ('market', .54, .76, .46, .24)]
     return {
         'version': 1,
+        'labels': {'title': 'DYSTOPIAN / SURVEILLANCE', 'subtitle': 'MUNICIPAL OBSERVATION NETWORK     //     SECTOR 09', 'settings': 'AJUSTES', 'controlTitle': 'CONTROL / CONFIGURATION', 'sector': 'SECTOR 09', 'uplink': 'UPLINK ESTABLISHED', 'talk': 'Hablar · diálogo local', 'lost': 'CONNECTION LOST'},
         'appearance': {'accent': '#83a6ae', 'background': '#10171c', 'font': 'DejaVu Sans Mono',
                        'border': 1, 'gap': 6, 'crt': False, 'interference': True,
                        'transitionMs': 260, 'ambient': True, 'ambientIntensity': 0.06},
@@ -86,6 +87,8 @@ def validate_panels(panels):
     for p in panels:
         if not SLUG.fullmatch(p['id']) or p['id'] in seen or not SLUG.fullmatch(p['scene']):
             raise ValueError('Identificador de panel/escena inválido o duplicado')
+        if 'name' in p and (not isinstance(p['name'], str) or len(p['name']) > 80):
+            raise ValueError('Nombre de cámara inválido')
         seen.add(p['id'])
         for k in ('x', 'y'): number(p[k], 0, 1, k)
         for k in ('w', 'h'): number(p[k], 0.06, 1, k)
@@ -112,6 +115,10 @@ def validate(c):
     for name, panels in c['profiles'].items():
         if not isinstance(name, str) or not 1 <= len(name) <= 80: raise ValueError('Nombre de perfil inválido')
         validate_panels(panels)
+    for key in default_config()['labels']:
+        value = c['labels'].get(key)
+        if not isinstance(value, str) or not 1 <= len(value.strip()) <= 160:
+            raise ValueError('Nombre visible inválido: '+key)
     a = c['appearance']
     for k in ('accent', 'background'):
         if not re.fullmatch(r'#[0-9a-fA-F]{6}', a[k]): raise ValueError('Color: usa #RRGGBB')

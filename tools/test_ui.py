@@ -75,17 +75,24 @@ def main():
             window.grabWindow().save(str(capture/'connection-lost.png'))
             js('reconnectSerial++');wait(400);assert cards[1].property('lost') is False
             QTest.keyClick(window,Qt.Key_Escape);wait();assert value('activePanel')==''
-            state.setProperty('settingsVisible',True);wait(650)
-            settings=next((w for w in application.allWindows() if 'Centro de control' in w.title()),None)
-            assert settings is not None,'Settings window did not open'
+            button=window.findChild(QQuickItem,'settingsButton')
+            pos=button.mapToScene(button.boundingRect().center())
+            QTest.mouseClick(window,Qt.LeftButton,Qt.NoModifier,pos.toPoint());wait(650)
+            settings=next((w for w in application.allWindows() if w.objectName()=='settingsWindow'),None)
+            assert settings is not None and settings.isVisible(),'Settings window did not open'
+            settings.close();wait(200)
+            js('openSettings()');wait(400)
+            assert settings.isVisible(),'Settings did not reopen'
             # Visit every section. Controls must instantiate without warnings.
             for i in range(8):
                 settings.setProperty('sectionIndex',i);wait(180)
             settings.setProperty('sectionIndex',2);wait(500);settings.grabWindow().save(str(capture/'settings.png'))
-            js('draft.appearance.gap=8; draft.panels[0].scene="market"; refresh(); apply(null)',settings);wait(700)
+            js('draft.labels.title="MI ESCRITORIO"; draft.panels[0].name="Café central"; draft.appearance.gap=8; draft.panels[0].scene="market"; refresh(); apply(null)',settings);wait(700)
             assert Path(tmp,'config/dystopian-surveillance/config.json').is_file()
             saved=json.loads(Path(tmp,'config/dystopian-surveillance/config.json').read_text());assert saved['appearance']['gap']==8
             assert saved['panels'][0]['scene']=='market'
+            assert saved['labels']['title']=='MI ESCRITORIO'
+            assert saved['panels'][0]['name']=='Café central'
             # Import the bundled clip through the real async service, then assign via GUI callback.
             js('send("import",{path:'+json.dumps(str(ROOT/'assets/scenes/alley/scene.mp4'))+',name:"Prueba GUI",category:"Interiores"})')
             for _ in range(200):

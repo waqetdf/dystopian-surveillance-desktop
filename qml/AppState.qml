@@ -25,6 +25,8 @@ QtObject {
     property var pendingSelection: null
     property bool economy: ready && (config.performance.powerSave || (config.performance.autoPowerSave &&
         (fullscreen || stats.batteryLow || (stats.cpu !== null && stats.cpu > config.performance.cpuThreshold))))
+    signal settingsRequested()
+    function openSettings() { settingsPanel=activePanel; settingsVisible=true; settingsRequested(); }
     signal request(var message)
     signal saved()
     signal imported(string sceneId)
@@ -41,7 +43,7 @@ QtObject {
             dialogScene = m.scene; dialogLines = m.lines; dialogIndex = 0; dialogueTimer.restart();
         } else if (m.type === "error") { saving = false; busyImport = false; flash(m.text, true); }
         else if (m.type === "notice") flash(m.text, false);
-        else if (m.type === "settings") settingsVisible = true;
+        else if (m.type === "settings") openSettings();
         else if (m.type === "catalogReady") { busyImport=false; flash("Selección opcional disponible en la biblioteca.",false); }
         else if (m.type === "imported") { busyImport = false; imported(m.scene); flash("Animación importada.", false); }
     }
