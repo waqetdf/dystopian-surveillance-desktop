@@ -31,7 +31,19 @@ ShellRoot {
     }
     property bool fullscreen:ToplevelManager.toplevels.values.some(t=>t.activated&&t.fullscreen)
     onFullscreenChanged:desktopState.fullscreen=fullscreen
-    Loader { active:desktopState.ready; sourceComponent:Settings { app:desktopState } }
+    Loader {
+        active:desktopState.ready
+        sourceComponent:FloatingWindow {
+            id:settingsWindow
+            title:desktopState.config.labels.title+" · "+desktopState.config.labels.settings
+            implicitWidth:1120;implicitHeight:820
+            minimumSize:Qt.size(800,600)
+            visible:desktopState.settingsVisible
+            color:"#111b22"
+            onVisibleChanged:if(!visible) desktopState.settingsVisible=false
+            SettingsContent { anchors.fill:parent;app:desktopState }
+        }
+    }
     IpcHandler {
         target:"control"
         function open(panelId:string):void { let p=desktopState.ready?desktopState.config.panels.find(p=>p.id===panelId):null; if(p && Quickshell.screens.length) desktopState.select(p,Quickshell.screens[0].name); }

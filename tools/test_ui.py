@@ -83,10 +83,12 @@ def main():
             settings.close();wait(200)
             js('openSettings()');wait(400)
             assert settings.isVisible(),'Settings did not reopen'
+            settingsWindow=settings
+            settings=settingsWindow.findChild(QQuickItem,'settingsContent')
             # Visit every section. Controls must instantiate without warnings.
             for i in range(8):
                 settings.setProperty('sectionIndex',i);wait(180)
-            settings.setProperty('sectionIndex',2);wait(500);settings.grabWindow().save(str(capture/'settings.png'))
+            settings.setProperty('sectionIndex',2);wait(500);settingsWindow.grabWindow().save(str(capture/'settings.png'))
             js('draft.labels.title="MI ESCRITORIO"; draft.panels[0].name="Café central"; draft.appearance.gap=8; draft.panels[0].scene="market"; refresh(); apply(null)',settings);wait(700)
             assert Path(tmp,'config/dystopian-surveillance/config.json').is_file()
             saved=json.loads(Path(tmp,'config/dystopian-surveillance/config.json').read_text());assert saved['appearance']['gap']==8

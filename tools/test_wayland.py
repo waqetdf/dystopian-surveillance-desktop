@@ -44,6 +44,12 @@ def main():
             call('open','cam-2');time.sleep(.5);assert status()['activePanel']=='cam-2'
             call('close');time.sleep(.2);assert status()['activePanel']==''
             call('settings');time.sleep(.8);assert status()['settings'] is True
+            if os.environ.get('SWAYSOCK') and shutil.which('swaymsg'):
+                tree=json.loads(subprocess.check_output(['swaymsg','-t','get_tree','-r'],text=True))
+                def nodes(node):
+                    yield node
+                    for child in node.get('nodes',[])+node.get('floating_nodes',[]):yield from nodes(child)
+                assert any('AJUSTES' in (n.get('name') or '') and n.get('visible') for n in nodes(tree)), 'Settings not mapped and visible in compositor'
             call('quit');proc.wait(timeout=10);assert proc.returncode==0
             output=log.read_text()
             for token in ('TypeError','ReferenceError','Unable to assign','Could not create attached','Failed to load configuration'):
