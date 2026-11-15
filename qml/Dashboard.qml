@@ -21,7 +21,7 @@ Rectangle {
         }
         Item { Layout.fillWidth:true }
         Text { visible:desk.width>720;text:clock.text; color:"#8da4af";font.family:"DejaVu Sans Mono";font.pixelSize:12 }
-        ActionButton { objectName:"settingsButton";text:desk.app.ready?desk.app.config.labels.settings:"";onClicked:desk.app.openSettings() }
+        SettingsButton { objectName:"settingsButton";label:desk.app.ready?desk.app.config.labels.settings:"Ajustes";onClicked:desk.app.openSettings() }
     }
     Item {
         id:feeds;x:12;y:59;width:parent.width-24;height:parent.height-93

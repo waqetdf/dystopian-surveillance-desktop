@@ -16,7 +16,7 @@ PanelWindow {
     color:"#111b22"
     RowLayout {
         anchors.fill:parent;anchors.margins:5;spacing:6
-        ActionButton { text:bar.app.ready?bar.app.config.labels.settings:"Ajustes";onClicked:bar.app.openSettings() }
+        SettingsButton { label:bar.app.ready?bar.app.config.labels.settings:"Ajustes";onClicked:bar.app.openSettings() }
         ScrollView {
             Layout.fillWidth:true;Layout.fillHeight:true
             contentWidth:tasks.implicitWidth;contentHeight:38
