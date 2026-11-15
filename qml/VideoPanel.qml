@@ -71,9 +71,19 @@ Rectangle {
     }
     Rectangle { x:4; y:4; width:parent.width-8; height:21; color:"#121b21" }
     Text { x:12; y:7; text:(card.panel.name || card.panel.id)+" / "+(card.scene?card.scene.name:"SIN SEÑAL"); color:"#b1c1c7"; font.family:card.app.config.appearance.font; font.pixelSize:10; width:parent.width-62; elide:Text.ElideRight }
-    Rectangle { width:5; height:5; x:parent.width-17; y:12; color:card.lost ? "#b65a4a" : card.scene && card.scene.available===false ? "#b68a57" : "#86b5ad" }
+    Rectangle { width:5; height:5; x:parent.width-(card.selected?47:17); y:12; color:card.lost ? "#b65a4a" : card.scene && card.scene.available===false ? "#b68a57" : "#86b5ad" }
     Text { x:12; anchors.bottom:parent.bottom; anchors.bottomMargin:7; text:card.scene && card.scene.available===false ? "NO MEDIA / SELECT VIDEO" : card.lost ? "SIGNAL / OFFLINE" : card.selected ? "UPLINK / ACTIVE" : "LIVE FEED / ENCRYPTED"; color:"#6f8b98"; font.pixelSize:9; font.family:card.app.config.appearance.font }
     MouseArea { anchors.fill:parent; enabled:!card.preview; cursorShape:Qt.PointingHandCursor; onClicked:card.clicked() }
+    ActionButton {
+        objectName:"closeScene-"+card.panel.id
+        visible:card.selected && !card.preview
+        anchors.top:parent.top;anchors.right:parent.right
+        anchors.topMargin:3;anchors.rightMargin:4
+        width:26;height:22;implicitWidth:26;implicitHeight:22
+        z:20;text:"×";Accessible.name:"Cerrar escena";accent:"#df998c"
+        onClicked:card.app.close()
+    }
+
     Rectangle {
         id: bubble
         visible:!card.preview && card.app.config.dialogue.enabled && card.app.dialogScene===card.panel.scene && !!card.app.dialogText && !card.lost

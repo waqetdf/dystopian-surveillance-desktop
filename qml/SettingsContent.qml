@@ -71,8 +71,8 @@ Pane {
             }
             Item { Layout.fillWidth:true }
             ActionButton { text:"Descartar cambios";onClicked:settings.resetDraft() }
-            ActionButton { objectName:"closeSettings";text:"× Cerrar";accent:"#df998c";onClicked:app.settingsVisible=false }
             ActionButton { objectName:"applySettings";text:"Aplicar";enabled:!app.saving;onClicked:settings.apply(null) }
+            ActionButton { objectName:"closeSettings";text:"×";implicitWidth:30;implicitHeight:30;Accessible.name:"Cerrar ajustes";accent:"#df998c";onClicked:app.settingsVisible=false }
         }
         Label { visible:!!settings.localError || !!app.notice;text:settings.localError || app.notice;color:(settings.localError||app.noticeError)?"#e2a180":"#a7c5c6";wrapMode:Text.Wrap;Layout.fillWidth:true }
         RowLayout {
