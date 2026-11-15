@@ -1,0 +1,13 @@
+{
+  "assets/remote.json": "3a20ca5ac46514b40f43c8375124570d9c4962ea6f85d5d89dbc220c0f141278",
+  "assets/scenes/alley/scene.json": "231bd9fc259ce0b0fd22a0f01621eccf06029377744bd2e03726b26ecfa3d2b7",
+  "assets/scenes/alley/scene.mp4": "b5ea793d2e918e1a52f6e2b620960b9b960fc60628f84c48a323cf82a185188b",
+  "assets/scenes/alley/thumbnail.png": "f00b09dad97d67a7d7f84e406e88b6b94abb24218a7c512393625db90716ff6e",
+  "assets/scenes/apartment/scene.json": "66246c237baaaeb4eaf31dab9843b8815a21d7a732dd2e42cb134189875332ee",
+  "assets/scenes/apartment/scene.mp4": "14aa1cebb2a9f58f33299dc56268993e7c93134f063f9542c8a6aa7756951bf0",
+  "assets/scenes/apartment/thumbnail.png": "9f7cd935fa291c083373398ba7e35dafd9c57a4859ce65b57dd8e2195cba7503",
+  "assets/scenes/laboratory/scene.json": "2c9ea24e454c6780c18bf34dff950b3539cd0e866d9321e733a6dab7b95b054d",
+  "assets/scenes/market/scene.json": "039b8b08e85a57faaba4c995844b8647260c8c9462ac6c7c58c144518a13ce53",
+  "assets/scenes/rooftop/scene.json": "24343e52d9bc6d66f410e1104489bed765c6baea3f2f6a2d5fb05e1b544fbfdf",
+  "assets/scenes/station/scene.json": "d852fa35dc7e3f28534fd67e2b46624b1a0854187f75b60664fe14aa41faffec"
+}

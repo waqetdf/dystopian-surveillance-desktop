@@ -1,0 +1,91 @@
+{
+  "id": "market",
+  "name": "Emily · Distrito neón",
+  "category": "Escenas nocturnas",
+  "video": "scene.mp4",
+  "thumbnail": "thumbnail.png",
+  "personality": "Emily es una mensajera nocturna curiosa e irónica. Conoce los callejones y los anuncios de la ciudad.",
+  "license": "Descarga para uso personal como fondo; no se ha verificado una licencia de redistribución.",
+  "dialogues": {
+    "greeting": [
+      "La máquina vende café. La esperanza se agotó el martes."
+    ],
+    "talk": [
+      "La máquina vende café. La esperanza se agotó el martes.",
+      "No he visto al dueño del local desde el último apagón."
+    ]
+  },
+  "events": [
+    {
+      "id": "remember",
+      "trigger": "memory",
+      "minVisits": 3,
+      "probability": 1,
+      "cooldown": 300,
+      "lines": [
+        "Has vuelto. Recuerdo tu señal."
+      ]
+    },
+    {
+      "id": "greeting",
+      "trigger": "open",
+      "probability": 1,
+      "cooldown": 45,
+      "lines": [
+        "La máquina vende café. La esperanza se agotó el martes."
+      ]
+    },
+    {
+      "id": "anomaly",
+      "trigger": "random",
+      "probability": 0.06,
+      "cooldown": 180,
+      "lines": [
+        "Anomalía detectada en el sector. Quizá solo sea la lluvia."
+      ],
+      "effect": "alert"
+    },
+    {
+      "id": "waiting",
+      "trigger": "timer",
+      "after": 40,
+      "probability": 0.8,
+      "cooldown": 240,
+      "lines": [
+        "No he visto al dueño del local desde el último apagón."
+      ]
+    },
+    {
+      "id": "night",
+      "trigger": "hour",
+      "hour": 23,
+      "probability": 0.3,
+      "cooldown": 3600,
+      "lines": [
+        "Las patrullas cambian de turno a medianoche."
+      ]
+    },
+    {
+      "id": "terminal",
+      "trigger": "app",
+      "app": "browser",
+      "probability": 1,
+      "cooldown": 90,
+      "lines": [
+        "Canal auxiliar abierto. Te cubro desde aquí."
+      ]
+    }
+  ],
+  "apps": [
+    "browser",
+    "media",
+    "settings"
+  ],
+  "remote": true,
+  "source": {
+    "kind": "personal-download",
+    "url": "https://motionbgs.com/emily-in-the-cyberpunk-city",
+    "provider": "MotionBGS"
+  },
+  "frameRate": 24
+}

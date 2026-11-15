@@ -1,0 +1,91 @@
+{
+  "id": "station",
+  "name": "Tokio eléctrico",
+  "category": "Ciudad",
+  "video": "scene.mp4",
+  "thumbnail": "thumbnail.png",
+  "personality": "RELÉ-7 es un observador urbano mecánico. Frío, preciso y técnico.",
+  "license": "Descarga para uso personal como fondo; no se ha verificado una licencia de redistribución.",
+  "dialogues": {
+    "greeting": [
+      "El tren de las 03:17 nunca llega tarde. Solo llega a otro año."
+    ],
+    "talk": [
+      "El tren de las 03:17 nunca llega tarde. Solo llega a otro año.",
+      "Una vez guardé un billete para salir de aquí."
+    ]
+  },
+  "events": [
+    {
+      "id": "remember",
+      "trigger": "memory",
+      "minVisits": 3,
+      "probability": 1,
+      "cooldown": 300,
+      "lines": [
+        "Has vuelto. Recuerdo tu señal."
+      ]
+    },
+    {
+      "id": "greeting",
+      "trigger": "open",
+      "probability": 1,
+      "cooldown": 45,
+      "lines": [
+        "El tren de las 03:17 nunca llega tarde. Solo llega a otro año."
+      ]
+    },
+    {
+      "id": "anomaly",
+      "trigger": "random",
+      "probability": 0.06,
+      "cooldown": 180,
+      "lines": [
+        "Anomalía detectada en el sector. Quizá solo sea la lluvia."
+      ],
+      "effect": "alert"
+    },
+    {
+      "id": "waiting",
+      "trigger": "timer",
+      "after": 40,
+      "probability": 0.8,
+      "cooldown": 240,
+      "lines": [
+        "Una vez guardé un billete para salir de aquí."
+      ]
+    },
+    {
+      "id": "night",
+      "trigger": "hour",
+      "hour": 23,
+      "probability": 0.3,
+      "cooldown": 3600,
+      "lines": [
+        "Las patrullas cambian de turno a medianoche."
+      ]
+    },
+    {
+      "id": "terminal",
+      "trigger": "app",
+      "app": "files",
+      "probability": 1,
+      "cooldown": 90,
+      "lines": [
+        "Canal auxiliar abierto. Te cubro desde aquí."
+      ]
+    }
+  ],
+  "apps": [
+    "files",
+    "media",
+    "settings"
+  ],
+  "remote": true,
+  "source": {
+    "kind": "personal-download",
+    "url": "https://motionbgs.com/cyberpunk-tokyo-city",
+    "provider": "MotionBGS"
+  },
+  "frameRate": 24
+}

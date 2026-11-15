@@ -1,0 +1,38 @@
+[
+  {
+    "id": "rooftop",
+    "page": "https://motionbgs.com/yumi-on-the-roof",
+    "url": "https://motionbgs.com/dl/hd/2959",
+    "sha256": "210d6963dbdd814094e30457bf8267f179ff43d020d377fdae87578b941e5084",
+    "bytes": 3472973,
+    "provider": "MotionBGS",
+    "license": "Descarga para uso personal como fondo; no se ha verificado una licencia de redistribución."
+  },
+  {
+    "id": "station",
+    "page": "https://motionbgs.com/cyberpunk-tokyo-city",
+    "url": "https://motionbgs.com/dl/hd/2069",
+    "sha256": "9d39e38530d96b6763f7d59b100d74c399692434e94c6731343be66778b33646",
+    "bytes": 4257917,
+    "provider": "MotionBGS",
+    "license": "Descarga para uso personal como fondo; no se ha verificado una licencia de redistribución."
+  },
+  {
+    "id": "laboratory",
+    "page": "https://motionbgs.com/lucys-apartment",
+    "url": "https://motionbgs.com/dl/hd/8980",
+    "sha256": "b045958cbc943b170777213166bd37fae35309a00cf5afc52f95d3609f7dc55e",
+    "bytes": 6346072,
+    "provider": "MotionBGS",
+    "license": "Descarga para uso personal como fondo; no se ha verificado una licencia de redistribución."
+  },
+  {
+    "id": "market",
+    "page": "https://motionbgs.com/emily-in-the-cyberpunk-city",
+    "url": "https://motionbgs.com/dl/hd/1046",
+    "sha256": "1e9f3c2b90c8847e54a4c48ea9ee19667e43918105bce163a0d4743826e9ef77",
+    "bytes": 8371820,
+    "provider": "MotionBGS",
+    "license": "Descarga para uso personal como fondo; no se ha verificado una licencia de redistribución."
+  }
+]

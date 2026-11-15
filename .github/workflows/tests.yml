@@ -1,0 +1,23 @@
+name: Validate
+on: [push, pull_request]
+permissions:
+  contents: read
+jobs:
+  core:
+    env:
+      DSD_MEDIA_DIR: /tmp/dsd-media
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: sudo apt-get update && sudo apt-get install -y ffmpeg
+      - run: python tools/fetch_media.py
+      - run: python -m unittest discover -s tests -v
+      - run: bash -n install.sh uninstall.sh update.sh
+      - run: python tools/deploy.py verify
+      - run: |
+          ./install.sh --test-root /tmp/dsd-test --yes
+          ./update.sh --test-root /tmp/dsd-test --yes
+          ./uninstall.sh --test-root /tmp/dsd-test --yes

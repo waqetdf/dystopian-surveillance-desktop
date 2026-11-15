@@ -1,0 +1,91 @@
+{
+  "id": "apartment",
+  "name": "Terraza violeta",
+  "category": "Personajes",
+  "video": "scene.mp4",
+  "thumbnail": "thumbnail.png",
+  "personality": "Vega, enlace de una red clandestina. Analítica, reservada y leal; nunca confunde sus diálogos ficticios con alertas del sistema.",
+  "license": "Vídeo aportado por el usuario para su escritorio privado; licencia de redistribución no facilitada.",
+  "dialogues": {
+    "greeting": [
+      "La terraza está despejada. Tu señal es estable."
+    ],
+    "talk": [
+      "Desde aquí los anuncios parecen estrellas artificiales.",
+      "Mantendré abierto el enlace mientras trabajas."
+    ]
+  },
+  "events": [
+    {
+      "id": "remember",
+      "trigger": "memory",
+      "minVisits": 3,
+      "probability": 1,
+      "cooldown": 300,
+      "lines": [
+        "Has vuelto. Recuerdo tu señal."
+      ]
+    },
+    {
+      "id": "greeting",
+      "trigger": "open",
+      "probability": 1,
+      "cooldown": 45,
+      "lines": [
+        "La terraza está despejada. Tu señal es estable."
+      ]
+    },
+    {
+      "id": "anomaly",
+      "trigger": "random",
+      "probability": 0.06,
+      "cooldown": 180,
+      "lines": [
+        "Anomalía detectada en el sector. Quizá solo sea la lluvia."
+      ],
+      "effect": "alert"
+    },
+    {
+      "id": "waiting",
+      "trigger": "timer",
+      "after": 40,
+      "probability": 0.8,
+      "cooldown": 240,
+      "lines": [
+        "Mantendré abierto el enlace mientras trabajas."
+      ]
+    },
+    {
+      "id": "night",
+      "trigger": "hour",
+      "hour": 23,
+      "probability": 0.3,
+      "cooldown": 3600,
+      "lines": [
+        "Las patrullas cambian de turno a medianoche."
+      ]
+    },
+    {
+      "id": "terminal",
+      "trigger": "app",
+      "app": "browser",
+      "probability": 1,
+      "cooldown": 90,
+      "lines": [
+        "Canal auxiliar abierto. Te cubro desde aquí."
+      ]
+    }
+  ],
+  "apps": [
+    "browser",
+    "files",
+    "media",
+    "settings"
+  ],
+  "source": {
+    "kind": "user-upload",
+    "filename": "From Klickpin.com- Unique Neutral Outfit Ideas You Need Right Now-pin-id-1115837245185601377.mp4",
+    "sha256": "14aa1cebb2a9f58f33299dc56268993e7c93134f063f9542c8a6aa7756951bf0"
+  },
+  "frameRate": 30
+}

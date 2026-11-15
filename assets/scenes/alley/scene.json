@@ -1,0 +1,90 @@
+{
+  "id": "alley",
+  "name": "Café de neón",
+  "category": "Personajes",
+  "video": "scene.mp4",
+  "thumbnail": "thumbnail.png",
+  "personality": "Nara, una operadora de radio tranquila y curiosa, descansa entre conexiones. Habla con calidez y frases cortas.",
+  "license": "Vídeo aportado por el usuario para su escritorio privado; licencia de redistribución no facilitada.",
+  "dialogues": {
+    "greeting": [
+      "Te recibo entre dos anuncios de neón."
+    ],
+    "talk": [
+      "A esta hora la ciudad parece otra.",
+      "Si te quedas, puedo guardarte el canal."
+    ]
+  },
+  "events": [
+    {
+      "id": "remember",
+      "trigger": "memory",
+      "minVisits": 3,
+      "probability": 1,
+      "cooldown": 300,
+      "lines": [
+        "Has vuelto. Recuerdo tu señal."
+      ]
+    },
+    {
+      "id": "greeting",
+      "trigger": "open",
+      "probability": 1,
+      "cooldown": 45,
+      "lines": [
+        "Te recibo entre dos anuncios de neón."
+      ]
+    },
+    {
+      "id": "anomaly",
+      "trigger": "random",
+      "probability": 0.06,
+      "cooldown": 180,
+      "lines": [
+        "Anomalía detectada en el sector. Quizá solo sea la lluvia."
+      ],
+      "effect": "alert"
+    },
+    {
+      "id": "waiting",
+      "trigger": "timer",
+      "after": 40,
+      "probability": 0.8,
+      "cooldown": 240,
+      "lines": [
+        "Si te quedas, puedo guardarte el canal."
+      ]
+    },
+    {
+      "id": "night",
+      "trigger": "hour",
+      "hour": 23,
+      "probability": 0.3,
+      "cooldown": 3600,
+      "lines": [
+        "Las patrullas cambian de turno a medianoche."
+      ]
+    },
+    {
+      "id": "terminal",
+      "trigger": "app",
+      "app": "terminal",
+      "probability": 1,
+      "cooldown": 90,
+      "lines": [
+        "Canal auxiliar abierto. Te cubro desde aquí."
+      ]
+    }
+  ],
+  "apps": [
+    "terminal",
+    "browser",
+    "settings"
+  ],
+  "source": {
+    "kind": "user-upload",
+    "filename": "ModernReyAnime_pindown.io_1794763429.mp4",
+    "sha256": "b5ea793d2e918e1a52f6e2b620960b9b960fc60628f84c48a323cf82a185188b"
+  },
+  "frameRate": 30
+}
