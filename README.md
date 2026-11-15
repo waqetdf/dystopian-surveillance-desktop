@@ -72,6 +72,13 @@ que realmente cargas. El instalador admite la ruta XDG estándar.
 
 ## Manejo
 
+La barra inferior lista las ventanas abiertas. Pulsa su nombre para activarlas,
+**×** para solicitar su cierre normal o **□** para alternar pantalla completa.
+Los cambios sin guardar siguen sujetos al diálogo de cada aplicación. Ajustes y
+los menús de escena tienen un botón **× Cerrar**; cerrar Ajustes no aplica el
+borrador, utiliza **Aplicar** primero. Las ventanas externas conservan las
+ decoraciones que proporcionen la aplicación y Hyprland.
+
 Pulsa una cámara para ampliarla. Pulsa de nuevo o usa **Esc** para cerrarla.
 Las ventanas normales quedan encima de la capa de escritorio. La configuración
 es una ventana normal; no utiliza una capa exclusiva que bloquee las aplicaciones.

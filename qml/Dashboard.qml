@@ -60,7 +60,7 @@ Rectangle {
                     RowLayout {
                         Layout.fillWidth:true
                         Label { text:desk.app.ready?desk.app.config.labels.uplink:"";color:"#91b9b5";font.pixelSize:10;Layout.fillWidth:true }
-                        ActionButton { text:"×";implicitWidth:32;onClicked:desk.app.close() }
+                        ActionButton { text:"× Cerrar";implicitWidth:90;onClicked:desk.app.close() }
                     }
                     Label { text:menu.scene?menu.scene.name:"";font.pixelSize:22;color:"#d1d9db";wrapMode:Text.Wrap;Layout.fillWidth:true }
                     Label { text:menu.scene?menu.scene.personality:"";font.pixelSize:11;color:"#8da0a9";wrapMode:Text.Wrap;Layout.fillWidth:true }

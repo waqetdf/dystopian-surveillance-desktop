@@ -26,7 +26,15 @@ ShellRoot {
             WlrLayershell.layer:WlrLayer.Bottom
             WlrLayershell.keyboardFocus:desktopState.activePanel?WlrKeyboardFocus.OnDemand:WlrKeyboardFocus.None
             color:"#10171c"
-            Dashboard { anchors.fill:parent;app:desktopState;screenName:modelData.name;obscured:root.fullscreen }
+            Dashboard { anchors.fill:parent;anchors.bottomMargin:48;app:desktopState;screenName:modelData.name;obscured:root.fullscreen }
+        }
+    }
+    Variants {
+        model:Quickshell.screens
+        Taskbar {
+            required property var modelData
+            screen:modelData
+            app:desktopState
         }
     }
     property bool fullscreen:ToplevelManager.toplevels.values.some(t=>t.activated&&t.fullscreen)
