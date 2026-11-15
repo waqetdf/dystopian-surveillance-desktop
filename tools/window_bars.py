@@ -56,10 +56,10 @@ def main():
     if not args.config.is_file():raise ValueError('No se encuentra hyprland.conf; utiliza --config RUTA.')
     if not os.environ.get('HYPRLAND_INSTANCE_SIGNATURE'):raise ValueError('Ejecuta dentro de tu sesión Hyprland.')
     if not args.remove:
-        for binary in ('hyprpm','hyprctl','pacman'):
+        for binary in ('hyprctl','pacman'):
             if not shutil.which(binary):raise ValueError('Falta '+binary)
         # Hyprpm builds the official plugin revision for the running compositor.
-        subprocess.run(['sudo','pacman','-S','--needed','base-devel','cmake','meson','ninja','git','cpio','pkgconf'],check=True)
+        subprocess.run(['sudo','pacman','-Syu','--needed','hyprpm','base-devel','cmake','meson','ninja','git','cpio','pkgconf'],check=True)
         listing=subprocess.check_output(['hyprpm','list'],text=True)
         if 'hyprbars' not in listing:
             subprocess.run(['hyprpm','add','https://github.com/hyprwm/hyprland-plugins'],check=True)
