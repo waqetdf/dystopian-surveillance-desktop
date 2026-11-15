@@ -65,14 +65,19 @@ Rectangle {
                     Label { text:menu.scene?menu.scene.name:"";font.pixelSize:22;color:"#d1d9db";wrapMode:Text.Wrap;Layout.fillWidth:true }
                     Label { text:menu.scene?menu.scene.personality:"";font.pixelSize:11;color:"#8da0a9";wrapMode:Text.Wrap;Layout.fillWidth:true }
                     Rectangle { Layout.fillWidth:true;height:1;color:"#3a4c56" }
-                    Repeater {
-                        model:menu.scene?menu.scene.apps:[]
-                        ActionButton {
-                            required property string modelData
-                            property var entry:desk.app.ready?desk.app.config.apps.find(a=>a.id===modelData):null
-                            Layout.fillWidth:true;text:entry?(entry.icon+"   "+entry.name):modelData
-                            enabled:!!entry
-                            onClicked:desk.app.send("launch",{scene:desk.app.activeScene,app:modelData})
+                    GridLayout {
+                        Layout.fillWidth:true
+                        columns:Math.max(1, Math.min(4, Math.floor(width/90)))
+                        columnSpacing:10;rowSpacing:16
+                        Repeater {
+                            model:menu.scene?menu.scene.apps:[]
+                            AppTile {
+                                required property string modelData
+                                entry:desk.app.ready?desk.app.config.apps.find(a=>a.id===modelData):null
+                                objectName:"app-tile-"+modelData
+                                Layout.fillWidth:true
+                                onClicked:desk.app.send("launch",{scene:desk.app.activeScene,app:modelData})
+                            }
                         }
                     }
                     ActionButton { Layout.fillWidth:true;text:"Hablar · diálogo local";onClicked:desk.app.send("talk",{scene:desk.app.activeScene}) }
